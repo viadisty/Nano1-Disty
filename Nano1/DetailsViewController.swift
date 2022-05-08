@@ -7,11 +7,11 @@
 
 import UIKit
 
-class DetailsViewController: UIViewController {
-
+class DetailsViewController: UIViewController, ModallyViewControllerDelegate {
+    
     @IBOutlet weak var serumTableView: UITableView!
     
-  
+    
     
     var dataSerum = ["Somethinc Hydrating Serum","Cosrx Snail Serum"]
     
@@ -24,12 +24,25 @@ class DetailsViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
-   
-    @IBAction func addListBtn(_ sender: Any) {
-        dataSerum.insert("Insert Product Name", at: dataSerum.count)
-        //tableView.reloadData()
-        serumTableView.insertRows(at: [IndexPath(row: dataSerum.count - 1, section: 0)], with: .automatic)
+    // MARK: - Segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "faceSerumToDetails" {
+            let modal = segue.destination as? ModallyViewController
+            // since we already subscribe the delegate from second page, we need to connect it to here
+            
+            modal?.delegate = self
+        }
     }
+    func addNewData(data: String){
+        dataSerum.append(data)
+        serumTableView.reloadData()
+    }
+    
+    //    @IBAction func addListBtn(_ sender: Any) {
+    //        dataSerum.insert("Insert Product Name", at: dataSerum.count)
+    //        //tableView.reloadData()
+    //        serumTableView.insertRows(at: [IndexPath(row: dataSerum.count - 1, section: 0)], with: .automatic)
+    //    }
     
 }
 //extension serum
